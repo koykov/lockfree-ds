@@ -10,7 +10,7 @@ type TreiberStack struct {
 }
 
 func (s *TreiberStack) Push(value any) {
-	e := entry{payload: value}
+	e := entryS{payload: value}
 	for {
 		headptr := atomic.LoadPointer(&s.head)
 		e.next = headptr
@@ -26,7 +26,7 @@ func (s *TreiberStack) Pop() (value any, ok bool) {
 		if headptr == nil {
 			return
 		}
-		headentry := (*entry)(headptr)
+		headentry := (*entryS)(headptr)
 		next := atomic.LoadPointer(&headentry.next)
 		if ok = atomic.CompareAndSwapPointer(&s.head, headptr, next); ok {
 			value = headentry.payload
@@ -35,7 +35,7 @@ func (s *TreiberStack) Pop() (value any, ok bool) {
 	}
 }
 
-type entry struct {
+type entryS struct {
 	payload any
 	next    unsafe.Pointer
 }

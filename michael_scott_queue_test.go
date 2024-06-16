@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// call me using -race option
 func TestMichaelScottQueue(t *testing.T) {
 	t.Run("", func(t *testing.T) {
 		var wg sync.WaitGroup
